@@ -1,0 +1,72 @@
+﻿@model IEnumerable<project1.Models.Employee>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Employee Details</h2>
+@if (!Model.Any())
+{
+    <p>No Employee Data</p>
+}
+else
+{
+<p>
+   
+
+    <button class="btn-primary" style="background-color:green" onclick="location.href = '@Url.Action("Create", "Employees")'; return false;">New Employee</button>
+</p>
+    <table id="employees" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Department)
+                    </td>
+                    <td>
+                        <button data-employee-id="@item.Id" class="btn-primary js-delete" style="background-color:red">Delete</button>|
+                        <button class="btn-primary" style="background-color:blue" onclick="location.href = '@Url.Action("Edit","Employees", new { id = item.Id })'; return false;">Edit</button>
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@section scripts
+{
+    <script>
+
+        $(document).ready(function () {
+            $("#employees .js-delete").on("click", function () {
+                var button = $(this);
+                if(confirm("Delete employee?")) {
+                    $.ajax({
+                        url: "/api/employees/" + button.attr("data-employee-id"),
+                        method: "DELETE",
+                        success: function () {
+                            button.parents("tr").remove();
+                        }
+
+                    });
+                }
+            });
+        });
+
+        
+
+
+    </script>
+}

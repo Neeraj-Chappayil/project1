@@ -1,0 +1,24 @@
+﻿@model project1.Models.Employee
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Enter Employee Details</h3>
+
+@using (Html.BeginForm("Create", "Employees"))
+{
+   @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Department)
+        @Html.TextBoxFor(m => m.Department, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn-primary">Save</button>
+}
+<div>
+    @Html.ActionLink("Back to List","Index")
+</div>
